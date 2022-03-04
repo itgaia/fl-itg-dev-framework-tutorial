@@ -1,0 +1,6 @@
+{
+  "appTitle": "dev_framework_tutorial",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
