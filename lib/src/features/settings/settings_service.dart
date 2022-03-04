@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 /// persist the user settings locally, use the shared_preferences package. If
 /// you'd like to store settings on a web server, use the http package.
 class SettingsService {
+  /// Contains the page widget to show when start the app
+  Widget? appMainPage;
+
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async => ThemeMode.system;
 
