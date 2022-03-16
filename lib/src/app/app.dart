@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+
+import 'constants.dart';
+import 'injection_container.dart' as di;
+import 'app_config.dart';
+import 'injection_container.dart';
+import 'itg_app_custom.dart';
 import '../common/helper.dart';
 import '../common/itg_localization.dart';
 import '../features/home/home_page.dart';
 import '../features/settings/settings_controller.dart';
 import '../features/settings/settings_service.dart';
 import '../features/settings/settings_view.dart';
-import 'constants.dart';
-import 'injection_container.dart' as di;
-
-import 'app_config.dart';
-import 'injection_container.dart';
-import 'itg_app_custom.dart';
 
 Future<void> initializeApp({bool forTesting = false}) async {
   const String baseLogMsg = '[initializeApp]';
@@ -19,7 +19,7 @@ Future<void> initializeApp({bool forTesting = false}) async {
   systemUnderTesting = forTesting;
 
   await di.init();
-  customizeApp();
+  await customizeApp();
 
   itgLogVerbose('$baseLogMsg load settings...');
   // Load the settings (user's preferred theme) while the splash screen is displayed.
@@ -28,6 +28,7 @@ Future<void> initializeApp({bool forTesting = false}) async {
 
   itgLogVerbose('$baseLogMsg set appMainPage...');
   di.sl<SettingsService>().appMainPage = const HomePage();
+
   itgLogVerbose('$baseLogMsg end...');
 }
 

@@ -10,9 +10,7 @@
 Map mergeMap(Iterable<Map> maps, {bool recursive = true, bool acceptNull = false}) {
   Map<String, Map<String, String>> result = {};
   // itgLogVerbose('[ItgMap.mergeMap] before merge...');
-  // maps.forEach((Map map) {
   for (var map in maps) {
-    // if (map != null) _copyValues(map, result, recursive, acceptNull);
     _copyValues(map, result, recursive, acceptNull);
   }
   // itgLogVerbose('[ItgMap.mergeMap] after merge - result: $result');
@@ -31,4 +29,3 @@ _copyValues(Map from, Map to, bool recursive, bool acceptNull) {
     }
   }
 }
-

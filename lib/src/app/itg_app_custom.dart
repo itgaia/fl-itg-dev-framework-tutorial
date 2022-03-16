@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'constants.dart';
 import '../common/helper.dart';
 import '../common/itg_custom.dart';
 import '../common/itg_localization.dart';
-import 'constants.dart';
 
 Map<String, Map<String, String>> _localizedValues = {
   'en': {
     'appWindowTitle': 'DEVFWRK_TUT_P1',
     'appTitle': 'Dev Framework Tutorial (part 1)',
+    'Notes': 'Notes',
+    'Note': 'Note',
+    'NotesItem': 'Note',
   },
 };
 
-void customizeApp() {
+Future<void> customizeApp() async {
   itgLogVerbose('[ItgAppCustom.customizeApp]');
   _localizedValues['el'] = {
     'appWindowTitle': _localizedValues['en']!['appWindowTitle']!,

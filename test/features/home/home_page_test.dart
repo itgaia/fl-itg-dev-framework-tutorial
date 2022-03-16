@@ -1,4 +1,3 @@
-import 'package:dev_framework_tutorial/src/app/app.dart';
 import 'package:dev_framework_tutorial/src/app/constants.dart';
 import 'package:dev_framework_tutorial/src/features/home/home_page.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import '../../common/test_helper.dart';
 
 void main() {
   setUp(() async {
-    await initializeApp(forTesting: true);
+    await initializeAppForTesting();
   });
 
   group('Home page widget tests', () {
