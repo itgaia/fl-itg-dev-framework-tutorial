@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../../../app/constants.dart';
 import '../../../common/helper.dart';
 import '../../../core/error/exception.dart';
+import '../domain/notes_helper.dart';
 import 'notes_model.dart';
 
 const msgBaseSourceClass = 'NotesRemoteDataSource';

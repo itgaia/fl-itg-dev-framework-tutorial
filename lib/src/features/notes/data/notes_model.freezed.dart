@@ -11,7 +11,7 @@ part of 'notes_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 NotesModel _$NotesModelFromJson(Map<String, dynamic> json) {
   return _NotesModel.fromJson(json);
@@ -51,7 +51,7 @@ const $NotesModel = _$NotesModelTearOff();
 
 /// @nodoc
 mixin _$NotesModel {
-// TODO: How can I refactor it in order to use the mongoDbBackend?
+// TODO: How can I refactor it in order to use the useMongoDbBackend?
 // @ObjectIdJsonConverter() @JsonKey(name: '_id', toJson: omitEmpty, includeIfNull: false) String? id,
   @JsonKey(toJson: omitEmpty, includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
@@ -210,7 +210,7 @@ class _$_NotesModel extends _NotesModel {
   factory _$_NotesModel.fromJson(Map<String, dynamic> json) =>
       _$$_NotesModelFromJson(json);
 
-  @override // TODO: How can I refactor it in order to use the mongoDbBackend?
+  @override // TODO: How can I refactor it in order to use the useMongoDbBackend?
 // @ObjectIdJsonConverter() @JsonKey(name: '_id', toJson: omitEmpty, includeIfNull: false) String? id,
   @JsonKey(toJson: omitEmpty, includeIfNull: false)
   final String? id;
@@ -282,7 +282,7 @@ abstract class _NotesModel extends NotesModel {
   factory _NotesModel.fromJson(Map<String, dynamic> json) =
       _$_NotesModel.fromJson;
 
-  @override // TODO: How can I refactor it in order to use the mongoDbBackend?
+  @override // TODO: How can I refactor it in order to use the useMongoDbBackend?
 // @ObjectIdJsonConverter() @JsonKey(name: '_id', toJson: omitEmpty, includeIfNull: false) String? id,
   @JsonKey(toJson: omitEmpty, includeIfNull: false)
   String? get id;

@@ -21,6 +21,7 @@ class NotesItemScreen extends StatelessWidget {
               text: data.id == null ? '<not assigned>' : data.id!,
               key: const Key('$keyNotesWidgetItemShowBase-col1-id')
             ),
+            //** fields start **//
             ItgTextWithLabel(
               label: 'Description',
               text: data.description,
@@ -31,6 +32,7 @@ class NotesItemScreen extends StatelessWidget {
               text: data.content,
               key: const Key('$keyNotesWidgetItemShowBase-col1-content')
             ),
+            //** fields end **//
           ],
         ),
       )

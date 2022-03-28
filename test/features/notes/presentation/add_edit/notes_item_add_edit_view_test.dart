@@ -32,11 +32,7 @@ void main() {
 
     mockNotesItemAddEditBloc = MockNotesItemAddEditBloc();
     when(() => mockNotesItemAddEditBloc.state).thenReturn(
-        NotesItemAddEditState(
-            initialData: notesItem,
-            description: notesItem.description,
-            content: notesItem.content
-        )
+      sampleNotesItemAddEditState(initialData: notesItem)
     );
 
     itgLogVerbose('Notes Item Add/Edit View test - SetUp - Start...');
@@ -101,7 +97,7 @@ void main() {
 
       when(() => mockNotesItemAddEditBloc.state).thenReturn(
         const NotesItemAddEditState(
-          initialData: NotesModel(description: 'description'),
+          initialData: sampleNotesItemInitialData,
         ),
       );
       await tester.pumpApp(buildSubject());
@@ -128,6 +124,7 @@ void main() {
       );
     }
 
+    //** fields start **//
     group('CCIAEV code text form field', () {
       testWidgets('CCIAEV code is rendered', (tester) async {
         await tester.pumpApp(buildSubject());
@@ -197,6 +194,7 @@ void main() {
         },
       );
     });
+    //** fields end **//
 
     group('CCIAEV save fab', () {
       testWidgets('CCIAEV save fab is rendered', (tester) async {

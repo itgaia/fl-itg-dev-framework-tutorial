@@ -4,6 +4,7 @@ import 'package:dev_framework_tutorial/src/app/constants.dart';
 import 'package:dev_framework_tutorial/src/common/helper.dart';
 import 'package:dev_framework_tutorial/src/core/error/exception.dart';
 import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart';
+import 'package:dev_framework_tutorial/src/features/notes/domain/notes_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
@@ -82,8 +83,8 @@ void main() {
 
     test('CCRDS create should return the item with id and dates when the response code is 200', () async {
       setUpHttpClientCreateNotesItemSuccess200();
-      final result = await dataSource.createNotesItem(sampleNotesItemAddData);
-      expect(result, equals(sampleNotesItemAddDataExpected));
+      final result = await dataSource.createNotesItem(itemNotesAddTestData);
+      expect(result, equals(itemNotesAddTestDataExpected));
     }, skip: !useHttpClient);
 
     test('CCRDS create should return a ServerException when the response code is 404 or other', () async {

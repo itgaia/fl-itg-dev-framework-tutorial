@@ -35,11 +35,7 @@ void main() {
 
     mockNotesItemAddEditBloc = MockNotesItemAddEditBloc();
     when(() => mockNotesItemAddEditBloc.state).thenReturn(
-      NotesItemAddEditState(
-        initialData: tItem,
-        description: tItem.description,
-        content: tItem.content
-      )
+      sampleNotesItemAddEditState(initialData: tItem)
     );
 
     await initializeAppForTesting();
@@ -105,15 +101,12 @@ void main() {
         await tester.pumpRoute(
           NotesItemAddEditPage.route(
             action: ItemAddEditAction.add,
-            initialData: const NotesModel(
-              id: 'initial-id',
-              description: 'initial',
-            ),
+            initialData: sampleNotesItemInitialData
           ),
         );
         expect(find.byType(NotesItemAddEditPage), findsOneWidget);
         expect(
-          find.byWidgetPredicate((w) => w is EditableText && w.controller.text == 'initial'),
+          find.byWidgetPredicate((w) => w is EditableText && w.controller.text == sampleNotesItemInitialData.description),
           findsOneWidget,
         );
       });

@@ -92,6 +92,7 @@ class NotesRepositoryImpl implements NotesRepository {
             // if (notesItem.id == null) {
             //   // TODO: Why there is no setter in NotesModel?
             //   // There isn’t a setter named 'content' in class '_$NotesMode
+            //******** here there is the problem with mason {{{ *******************
             //   notes.add(notesItem.copyWith(id: '${notes.length+1}'));
             // } else {
             //   notes.add(notesItem);
@@ -101,6 +102,7 @@ class NotesRepositoryImpl implements NotesRepository {
               notes[notes.indexWhere((element) => element.id == notesItem.id)] = notesItem;
             } else {
               msgLogInfo('create item...');
+              //******** here there is the problem with mason {{{ *******************
               notes.add(notesItem.copyWith(id: '${notes.length+1}'));
             }
             await localDataSource.cacheNotes(notes);

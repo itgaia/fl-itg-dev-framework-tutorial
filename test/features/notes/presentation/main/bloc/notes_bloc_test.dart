@@ -4,14 +4,13 @@ import 'package:dartz/dartz.dart';
 import 'package:dev_framework_tutorial/src/app/injection_container.dart';
 import 'package:dev_framework_tutorial/src/core/error/failures.dart';
 import 'package:dev_framework_tutorial/src/core/usecase/usecase.dart';
-import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/delete_notes_item_usecase.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/save_notes_item_usecase.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/bloc/notes_bloc.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/notes_list_filter.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../notes_test_helper.dart';
+import '../../../notes_test_helper.dart';
 
 void main() {
   final tItems = notesTestData();
@@ -23,7 +22,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(NoParams());
-    registerFallbackValue(const NotesModel(description: '111'));
+    notesRegisterFallbackValue();
   });
 
   setUp(() {

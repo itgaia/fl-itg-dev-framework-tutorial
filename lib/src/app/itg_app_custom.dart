@@ -13,6 +13,9 @@ Map<String, Map<String, String>> _localizedValues = {
     'Notes': 'Notes',
     'Note': 'Note',
     'NotesItem': 'Note',
+    'Links': 'Links',
+    'Link': 'Link',
+    'LinksItem': 'Link',
   },
 };
 

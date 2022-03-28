@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'app_private_config.dart';
 
-const appDebugMode = false;
+const appDebugMode = true;
 const appDebugPaintSizeEnabled = false;
 const appDebugShowCheckedModeBanner = false;
 
@@ -38,15 +37,7 @@ const keyAbbrAddEdit = 'ae';
 // key name abbreviation constants for source element - unique
 const keyAbbrSourceWidget = 'w';
 
-// key name abbreviation constants for feature - unique
-const keyAbbrFeatureNotes = 'nt';
-
 const appTitleFull = 'Dev Framework Tutorial (part 1)';
-const appTitleNotes = 'Notes';
-const appTitleNotesItem = 'Note';
-const appTitleNotesItemAddPage = 'New $appTitleNotesItem';
-const appTitleNotesItemEditPage = 'Edit $appTitleNotesItem';
-const appTitleNotesItemDuplicatePage = 'Duplicate $appTitleNotesItem';
 
 const textButtonSnackbarDeleteUndo = 'Undo';
 const textHomePageWelcomeMessage1 = 'What a Wonderful World for All of Us...';
@@ -58,7 +49,6 @@ const textSampleContent = 'Some sample content';
 const keyAppBarPage = Key('app-bar-page');
 const keyButtonSaveItemAddEditPage = Key('button-save-item-add-edit');
 const keyButtonSnackbarDeleteUndo = Key('button-snackbar-delete-undo');
-const keyButtonNotesPage = Key('button-notes-page');
 const keyItemsItemShowPage = Key('page-items-item');
 const keyItemsListWidget = Key('widget-items-list');
 const keyItemsPage = Key('page-items');
@@ -72,8 +62,6 @@ const keyTextHomePageWelcomeMessage1 = Key('text-home-page-welcome-message-1');
 const keyTextHomePageWelcomeMessage2 = Key('text-home-page-welcome-message-2');
 const keyTextError = Key('text-error');
 
-const urlNotes = '$serverUrl/notes';
-
 Future<bool> networkInfoIsConnected = Future.value(false);  // Temporary...
 
 /// If the backend is MongoDb then id field is {"_id":{"$oid":"61011f6d4558ebe4f88acccc"}}
@@ -86,11 +74,6 @@ bool useSharedPreferencesBackend = true;
 bool useHttpClient = false;
 
 const textTitleSuffixDuplicate = ' (copy)';
-
-// assets
-const assetNotesFixture = 'notes_fixture_asset.json';
-const assetNotesResponseFixture = 'notes_response_fixture.json';
-const assetNotesItemCreateResponseFixture = 'notes_item_create_response_fixture.json';
 
 // colors
 const Color colorDarkGrey = Color.fromRGBO(64, 75, 96, .9);

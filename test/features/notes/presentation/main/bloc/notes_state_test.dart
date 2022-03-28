@@ -4,16 +4,10 @@ import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart'
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/bloc/notes_bloc.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/notes_list_filter.dart';
 
+import '../../../notes_test_helper.dart';
+
 void main() {
   group('NotesState', () {
-    const mockItem = NotesModel(
-      id: '1',
-      description: 'description 1',
-      content: 'content 1',
-      updatedAt: '2021-09-22T07:06:52.604Z'
-    );
-    const mockItems = [mockItem];
-
     NotesState createSubject({
       NotesStatus status = NotesStatus.initial,
       List<NotesModel>? items,
@@ -22,7 +16,7 @@ void main() {
     }) {
       return NotesState(
         status: status,
-        items: items ?? mockItems,
+        items: items ?? mockNotesItems,
         filter: filter,
         lastDeletedItem: lastDeletedItem,
       );
@@ -36,13 +30,13 @@ void main() {
       expect(
         createSubject(
           status: NotesStatus.initial,
-          items: mockItems,
+          items: mockNotesItems,
           filter: NotesListFilter.all,
           lastDeletedItem: null,
         ).props,
         equals(<Object?>[
           NotesStatus.initial, // status
-          mockItems, // todos
+          mockNotesItems, // todos
           NotesListFilter.all, // filter
           null, // lastDeletedTodo
         ]),
@@ -52,11 +46,11 @@ void main() {
     test('CCS filteredItems returns items filtered by filter', () {
       expect(
         createSubject(
-          items: mockItems,
+          items: mockNotesItems,
           filter: NotesListFilter.latest,
         ).filteredItems,
-        // equals(mockItems.where((item) => item.dtEmpty.isNotEmpty).toList()),
-        equals(mockItems.where((item) {
+        // equals(mockNotesItems.where((item) => item.dtEmpty.isNotEmpty).toList()),
+        equals(mockNotesItems.where((item) {
           final DateTime dtUpdatedAt = jsonStringAsValue(item.updatedAt, valueType: 'date');
           final DateTime dtMin = DateTime.now().subtract(const Duration(days: 30+1));
           return dtUpdatedAt.isAfter(dtMin);
@@ -87,14 +81,14 @@ void main() {
             status: () => NotesStatus.success,
             items: () => [],
             filter: () => NotesListFilter.latest,
-            lastDeletedItem: () => mockItem,
+            lastDeletedItem: () => mockNotesItem,
           ),
           equals(
             createSubject(
               status: NotesStatus.success,
               items: [],
               filter: NotesListFilter.latest,
-              lastDeletedItem: mockItem,
+              lastDeletedItem: mockNotesItem,
             ),
           ),
         );
@@ -102,7 +96,7 @@ void main() {
 
       test('CCS can copyWith null lastDeletedItem', () {
         expect(
-          createSubject(lastDeletedItem: mockItem).copyWith(
+          createSubject(lastDeletedItem: mockNotesItem).copyWith(
             lastDeletedItem: () => null,
           ),
           equals(createSubject(lastDeletedItem: null)),

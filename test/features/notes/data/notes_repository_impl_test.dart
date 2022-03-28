@@ -12,25 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../notes_test_helper.dart';
 
-const sampleData = '''[
-  {
-    "_id": {"\$oid":"61011f6d4558ebe4f88abc1"},
-    "description": "test description 1",
-    "content": "test content 1"
-  },
-  {
-    "_id": {"\$oid":"61011f6d4558ebe4f88abc2"},
-    "description": "test description 2",
-    "content": "test content 2"
-  },
-  {
-    "_id": {"\$oid":"61011f6d4558ebe4f88abc3"},
-    "description": "test description 3",
-    "content": "test content 3"
-  }
-]''';
-
-
 void main() {
   late NotesRemoteDataSource mockRemoteDataSource;
   late NotesLocalDataSource mockLocalDataSource;
@@ -139,7 +120,7 @@ void main() {
     _runTestsOffline(() {
       group('CCRI get (LocalDataSource)', () {
         test('CCRI get should return local data when the call to local data source is successful', () async {
-          SharedPreferences.setMockInitialValues({cachedNotesKey: sampleData});
+          SharedPreferences.setMockInitialValues({cachedNotesKey: sampleNotesData});
           when(() => mockLocalDataSource.getNotes())
             .thenAnswer((_) async => tNotesModelList);
           final subject = createSubject();
@@ -168,10 +149,7 @@ void main() {
         final NotesModel tItem = tItems.first;
 
         test('CCRI save makes correct repository request (create)', () async {
-          const newItem = NotesModel(
-            description: 'description 4',
-            content: 'content 4',
-          );
+          const newItem = itemNotesAddTestData;
           when(() => mockLocalDataSource.cacheNotes(any()))
               .thenAnswer((_) async => {});
           when(() => mockLocalDataSource.getNotes())
@@ -187,17 +165,13 @@ void main() {
         });
 
         test('CCRI save makes correct repository request (update)', () async {
-          const newItem = NotesModel(
-            id: '4',
-            description: 'description 4',
-            content: 'content 4',
-          );
+          final item = itemNotesUpdateTestData;
           when(() => mockRemoteDataSource.updateNotesItem(any()))
               .thenAnswer((_) async => tItem);
           final subject = createSubject();
-          expect(subject.saveNotesItem(newItem), completes);
-          expect(await subject.saveNotesItem(newItem), equals(Right(tItem)));
-          verify(() => mockRemoteDataSource.updateNotesItem(newItem)).called(2);
+          expect(subject.saveNotesItem(item), completes);
+          expect(await subject.saveNotesItem(item), equals(Right(tItem)));
+          verify(() => mockRemoteDataSource.updateNotesItem(item)).called(2);
         });
 
         test('CCRI save should return remote data when the call to remote data source is successful', () async {

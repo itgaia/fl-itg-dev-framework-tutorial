@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/bloc/notes_bloc.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/notes_list_filter.dart';
 
-import '../../notes_test_helper.dart';
+import '../../../notes_test_helper.dart';
 
 void main() {
   group('NotesEvent', () {

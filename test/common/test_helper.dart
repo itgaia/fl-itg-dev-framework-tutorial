@@ -53,8 +53,8 @@ extension ItgAddedFunctionality on WidgetTester {
     if (initializeWidget) await pumpWidgetUnderTest();
     expect(find.byKey(key), findsOneWidget);
     await tapOnWidget(key);
-    msgLogInfo('button save pressed....');
-    await Future.delayed(const Duration(seconds: 5));
+    msgLogInfo('button "${keyName(key)}" pressed....');
+    // await Future.delayed(const Duration(seconds: 5));
     expect(find.byType(T), findsOneWidget);
   }
 
@@ -62,7 +62,7 @@ extension ItgAddedFunctionality on WidgetTester {
     msgBaseSourceMethod = 'testNavigateToPage';
     if (initializeWidget) await pumpWidgetUnderTest();
     await tapOnWidgetByText(text, waitToSettle: true);
-    msgLogInfo('button save pressed....');
+    msgLogInfo('button "$text" pressed....');
     await Future.delayed(const Duration(seconds: 5));
     expect(find.byType(T), findsOneWidget);
   }

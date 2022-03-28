@@ -7,23 +7,16 @@ import 'package:http/http.dart' as http;
 
 import 'package:dev_framework_tutorial/src/app/injection_container.dart';
 import 'package:dev_framework_tutorial/src/common/helper.dart';
-import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/get_notes_usecase.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/bloc/notes_bloc.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/notes_page.dart';
 import 'package:dev_framework_tutorial/src/features/settings/settings_service.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../common/app_test_helper.dart';
 import '../../../../common/test_helper.dart';
 import '../../notes_test_helper.dart';
 
 void main() {
-  final mockNotes = List.generate(
-    5,
-    (i) => NotesModel(id: i.toString(), description: 'note code $i', content: 'note notes $i'),
-  );
-
   // late NotesBloc bloc;
   late MockNotesBloc mockNotesBloc;
   late MockGetNotesUsecase mockGetNotesUsecase;
@@ -99,7 +92,7 @@ void main() {
       when(() => mockNotesBloc.state).thenReturn(
           NotesState(
               status: NotesStatus.success,
-              items: mockNotes
+              items: notesTestData()
           )
       );
       await widgetTester.pumpNotesList(mockNotesBloc);

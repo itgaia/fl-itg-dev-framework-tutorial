@@ -29,11 +29,11 @@ This a new paragraph
 With 2nd line
 and a 3rd line''';
 
-const itemLongContent = NotesModel(
-  id: '4',
-  description: 'A note with a long content',
-  content: textMultiLine
-);
+// const itemLongContent = NotesModel(
+//   id: '4',
+//   description: 'A note with a long content',
+//   content: textMultiLine
+// );
 
 class NotesLocalDataSourceImpl implements NotesLocalDataSource {
 
@@ -53,7 +53,8 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
   @override
   Future<NotesModel> addNote(note) {
     itgLogVerbose('[NotesLocalDataSourceImpl.addNote] not implemented yet...');
-    return Future.value(const NotesModel(description: 'description 11', content: 'content 11'));
+    // return Future.value(const NotesModel(description: 'description 11', content: 'content 11'));
+    return Future.value(itemNotesSample());
   }
 
   @override
@@ -70,7 +71,7 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
     // jsonString = null;
     late List<NotesModel> items;
     if (jsonString == null) {
-      items = notesSampleData(count: 2);
+      items = itemsNotesSample(count: 2);
       // items = notesSampleData(count: 13);
       // items[3] = itemLongContent;
       // cacheNotes(items);

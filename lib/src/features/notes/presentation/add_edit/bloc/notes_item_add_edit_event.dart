@@ -7,6 +7,7 @@ abstract class NotesItemAddEditEvent extends Equatable {
   List<Object> get props => [];
 }
 
+//** fields start **//
 class NotesItemAddEditDescriptionChangedEvent extends NotesItemAddEditEvent {
   final String description;
 
@@ -24,6 +25,7 @@ class NotesItemAddEditContentChangedEvent extends NotesItemAddEditEvent {
   @override
   List<Object> get props => [content];
 }
+//** fields end **//
 
 class NotesItemAddEditSubmittedEvent extends NotesItemAddEditEvent {
   const NotesItemAddEditSubmittedEvent();

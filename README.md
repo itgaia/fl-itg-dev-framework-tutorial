@@ -47,4 +47,5 @@ based on:
 ## History
 
 04/03/2022: Initial creation of project based on Flutter app template with a simple home page\
-15/03/2022: Added the feature Notes with testing\
+15/03/2022: Added the feature Notes with testing
+

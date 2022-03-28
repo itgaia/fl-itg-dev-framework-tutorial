@@ -1,3 +1,9 @@
+import 'package:dev_framework_tutorial/src/features/links/data/links_model.dart';
+import 'package:dev_framework_tutorial/src/features/links/domain/links_helper.dart';
+import 'package:dev_framework_tutorial/src/features/links/presentation/add_edit/links_item_add_edit_page.dart';
+import 'package:dev_framework_tutorial/src/features/links/presentation/add_edit/links_item_add_edit_view.dart';
+import 'package:dev_framework_tutorial/src/features/links/presentation/main/links_page.dart';
+import 'package:dev_framework_tutorial/src/features/links/presentation/show/links_item_show_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -22,17 +28,21 @@ String msgBaseSourceMethod = '';
 void msgLogInfo(String msg) => itgLogVerbose('[$msgBaseSourceClass/$msgBaseSourceMethod] $msg');
 void msgLogPrint(String msg) => itgLogPrint('[$msgBaseSourceClass/$msgBaseSourceMethod] $msg');
 
-const NotesModel data1 = NotesModel(
+const NotesModel dataNotes1 = NotesModel(
   description: 'My New Note',
   content: 'This is the content for my new note...',
 );
-const NotesModel data2 = NotesModel(
+const NotesModel dataNotes2 = NotesModel(
   description: 'My Edited New Note',
   content: 'This is the edited content for my new note...',
 );
-const NotesModel data3 = NotesModel(
+const NotesModel dataNotes3 = NotesModel(
   description: 'My Double Edited New Note',
   content: 'This is the double edited content for my new note...',
+);
+const LinksModel dataLinks1 = LinksModel(
+  description: 'My New link',
+  notes: 'This is the notes for my new link...',
 );
 
 // TODO: Refactor - The tests here are depended - The next needs the previous to have run successfully...
@@ -54,6 +64,8 @@ void main() {
       expect(find.text(appTitleFull), findsOneWidget);
       expect(find.text(textHomePageWelcomeMessage1), findsOneWidget);
       expect(find.text(textHomePageWelcomeMessage2), findsNothing);
+      expect(find.byKey(keyButtonNotesPage), findsOneWidget);
+      expect(find.byKey(keyButtonLinksPage), findsOneWidget);
 
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
     }, skip: false);
@@ -72,8 +84,8 @@ void main() {
 
       msgLogInfo('add a new item...');
       await widgetTester.testNavigateToPage<NotesItemAddEditPage>(Key('$keyNotesWidgetListItemBase-$keyFloatingActionAdd'));
-      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), data1.description);
-      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), data1.content);
+      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), dataNotes1.description);
+      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), dataNotes1.content);
       await widgetTester.testNavigateToPage<NotesPage>(keyButtonSaveItemAddEditPage);
       msgLogInfo('saved the new item...');
 
@@ -83,9 +95,54 @@ void main() {
       expect(find.byType(NotesItemAddEditPage), findsNothing);
       expect(find.byType(NotesItemAddEditView), findsNothing);
       expect(find.byType(NotesPage), findsOneWidget);
+
+      expect(find.byType(LinksItemShowPage), findsNothing);
+      expect(find.byType(LinksItemAddEditPage), findsNothing);
+      expect(find.byType(LinksItemAddEditView), findsNothing);
+      expect(find.byType(LinksPage), findsNothing);
+
       // await scrollToTheEndOfList(widgetTester);
 
-      expect(find.text(data1.description), findsOneWidget);
+      expect(find.text(dataNotes1.description), findsOneWidget);
+
+      msgLogInfo('end........\n');
+    }, skip: false);
+
+    testWidgets('add a new link', (WidgetTester widgetTester) async {
+      msgBaseSourceMethod = 'add a new link';
+      msgLogInfo('start........\n');
+
+      await widgetTester.pumpWidget(const App());
+      await widgetTester.pumpAndSettle();
+
+      await widgetTester.testNavigateToPage<LinksPage>(keyButtonLinksPage);
+
+      // await scrollToTheEndOfList(widgetTester);
+      expect(find.text(sampleDescription), findsNothing);
+      expect(find.text(dataNotes1.description), findsNothing);
+
+      msgLogInfo('add a new item...');
+      await widgetTester.testNavigateToPage<LinksItemAddEditPage>(Key('$keyLinksWidgetListItemBase-$keyFloatingActionAdd'));
+      await widgetTester.enterText(find.byKey(const Key('$keyLinksWidgetItemAddEditBase-col1-description')), dataLinks1.description);
+      await widgetTester.enterText(find.byKey(const Key('$keyLinksWidgetItemAddEditBase-col1-notes')), dataLinks1.notes);
+      await widgetTester.testNavigateToPage<LinksPage>(keyButtonSaveItemAddEditPage);
+      msgLogInfo('saved the new item...');
+
+      // await widgetTester.pageBack();
+      await widgetTester.pumpAndSettle();
+      expect(find.byType(LinksItemShowPage), findsNothing);
+      expect(find.byType(LinksItemAddEditPage), findsNothing);
+      expect(find.byType(LinksItemAddEditView), findsNothing);
+      expect(find.byType(LinksPage), findsOneWidget);
+
+      expect(find.byType(NotesItemShowPage), findsNothing);
+      expect(find.byType(NotesItemAddEditPage), findsNothing);
+      expect(find.byType(NotesItemAddEditView), findsNothing);
+      expect(find.byType(NotesPage), findsNothing);
+
+      // await scrollToTheEndOfList(widgetTester);
+
+      expect(find.text(dataLinks1.description), findsOneWidget);
 
       msgLogInfo('end........\n');
     }, skip: false);
@@ -101,7 +158,7 @@ void main() {
       expect(find.byKey(keyTextError), findsNothing);
 
       msgLogInfo('------>>> before enter item show page........\n');
-      await widgetTester.testNavigateToPageByText<NotesItemShowPage>(data1.description);
+      await widgetTester.testNavigateToPageByText<NotesItemShowPage>(dataNotes1.description);
 
       msgLogInfo('------>>> item show page........\n');
       expect(find.byType(NotesItemShowPage), findsOneWidget);
@@ -118,11 +175,11 @@ void main() {
       expect(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), findsOneWidget);
       expect(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), findsOneWidget);
 
-      msgLogInfo('------>>> before enter field values in edit page........\n  data.description: ${data2.description}\n');
+      msgLogInfo('------>>> before enter field values in edit page........\n  data.description: ${dataNotes2.description}\n');
       await widgetTester.tapOnWidget(const Key('$keyNotesWidgetItemAddEditBase-col1-description'));
-      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), data2.description);
+      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), dataNotes2.description);
       await widgetTester.tapOnWidget(const Key('$keyNotesWidgetItemAddEditBase-col1-content'));
-      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), data2.content);
+      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), dataNotes2.content);
       msgLogInfo('------>>> before save item in edit page........\n');
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
       await widgetTester.tapOnWidget(keyButtonSaveItemAddEditPage);
@@ -132,10 +189,10 @@ void main() {
       expect(find.byKey(keyNotificationFailure), findsNothing);
       expect(find.byKey(keyNotificationSuccess), findsOneWidget);
       expect(find.byType(NotesItemShowPage), findsOneWidget);
-      expect(find.text(data1.description), findsNothing);
-      expect(find.text(data1.content), findsNothing);
-      await widgetTester.testWidgetText(data2.description, const Key('$keyNotesWidgetItemShowBase-col1-description'));
-      await widgetTester.testWidgetText(data2.content, const Key('$keyNotesWidgetItemShowBase-col1-content'));
+      expect(find.text(dataNotes1.description), findsNothing);
+      expect(find.text(dataNotes1.content), findsNothing);
+      await widgetTester.testWidgetText(dataNotes2.description, const Key('$keyNotesWidgetItemShowBase-col1-description'));
+      await widgetTester.testWidgetText(dataNotes2.content, const Key('$keyNotesWidgetItemShowBase-col1-content'));
 
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
       msgLogInfo('------>>> before return back to items list page........\n');
@@ -148,10 +205,10 @@ void main() {
       msgLogInfo('------>>> items list page - scrolled to the end........\n');
 
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
-      expect(find.text(data1.description), findsNothing);
-      expect(find.text(data1.content), findsNothing);
-      await widgetTester.testWidgetText(data2.description, Key('$keyNotesWidgetListItemBase-$itemId-title'));
-      await widgetTester.testWidgetText(data2.content, Key('$keyNotesWidgetListItemBase-$itemId-content'));
+      expect(find.text(dataNotes1.description), findsNothing);
+      expect(find.text(dataNotes1.content), findsNothing);
+      await widgetTester.testWidgetText(dataNotes2.description, Key('$keyNotesWidgetListItemBase-$itemId-title'));
+      await widgetTester.testWidgetText(dataNotes2.content, Key('$keyNotesWidgetListItemBase-$itemId-content'));
 
       msgLogInfo('------>>> before enter item edit page (2nd time)........\n');
       await widgetTester.testNavigateToPage<NotesItemAddEditPage>(Key('$keyNotesWidgetListItemBase-$itemId-action-edit'));
@@ -161,11 +218,11 @@ void main() {
       expect(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), findsOneWidget);
       expect(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), findsOneWidget);
 
-      msgLogInfo('------>>> before enter field values in edit page (2nd time)........\n  data.description: ${data3.description}\n');
+      msgLogInfo('------>>> before enter field values in edit page (2nd time)........\n  data.description: ${dataNotes3.description}\n');
       await widgetTester.tapOnWidget(const Key('$keyNotesWidgetItemAddEditBase-col1-description'));
-      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), data3.description);
+      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-description')), dataNotes3.description);
       await widgetTester.tapOnWidget(const Key('$keyNotesWidgetItemAddEditBase-col1-content'));
-      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), data3.content);
+      await widgetTester.enterText(find.byKey(const Key('$keyNotesWidgetItemAddEditBase-col1-content')), dataNotes3.content);
       msgLogInfo('------>>> before save item in edit page (2nd time)........\n');
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
       await widgetTester.tapOnWidget(keyButtonSaveItemAddEditPage);
@@ -177,12 +234,12 @@ void main() {
       msgLogInfo('------>>> items list page - scrolled to the end........\n');
 
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
-      expect(find.text(data1.description), findsNothing);
-      expect(find.text(data1.content), findsNothing);
-      expect(find.text(data2.description), findsNothing);
-      expect(find.text(data2.content), findsNothing);
-      await widgetTester.testWidgetText(data3.description, Key('$keyNotesWidgetListItemBase-$itemId-title'));
-      await widgetTester.testWidgetText(data3.content, Key('$keyNotesWidgetListItemBase-$itemId-content'));
+      expect(find.text(dataNotes1.description), findsNothing);
+      expect(find.text(dataNotes1.content), findsNothing);
+      expect(find.text(dataNotes2.description), findsNothing);
+      expect(find.text(dataNotes2.content), findsNothing);
+      await widgetTester.testWidgetText(dataNotes3.description, Key('$keyNotesWidgetListItemBase-$itemId-title'));
+      await widgetTester.testWidgetText(dataNotes3.content, Key('$keyNotesWidgetListItemBase-$itemId-content'));
 
       msgLogInfo('end........\n');
     }, skip: false);
@@ -199,7 +256,7 @@ void main() {
       expect(find.byKey(keyTextError), findsNothing);
       // await scrollToTheEndOfList(widgetTester);
 
-      await widgetTester.testNavigateToPageByText<NotesItemShowPage>(data3.description);
+      await widgetTester.testNavigateToPageByText<NotesItemShowPage>(dataNotes3.description);
       expect(find.byType(NotesItemShowPage), findsOneWidget);
       await widgetTester.tapOnWidget(Key('$keyNotesWidgetItemShowBase-$keyFloatingActionDelete'));
       await widgetTester.tapOnWidgetByText('OK', waitToSettle: true);
@@ -212,15 +269,15 @@ void main() {
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
 
       // await scrollToTheEndOfList(widgetTester);
-      expect(find.text(data3.description), findsNothing);
-      expect(find.text(data3.content), findsNothing);
+      expect(find.text(dataNotes3.description), findsNothing);
+      expect(find.text(dataNotes3.content), findsNothing);
       if (useDelays) await Future.delayed(const Duration(seconds: 2));
 
       msgLogInfo('end........\n');
     }, skip: false);
 
     testWidgets('delete the first note', (WidgetTester widgetTester) async {
-      final data = notesSampleData().first;
+      final data = itemsNotesSample().first;
 
       msgBaseSourceMethod = 'delete the first note';
       msgLogInfo('start........\n');

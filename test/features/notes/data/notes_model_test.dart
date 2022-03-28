@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:dev_framework_tutorial/src/app/constants.dart';
+import 'package:dev_framework_tutorial/src/common/helper.dart';
 import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart';
+import 'package:dev_framework_tutorial/src/features/notes/domain/notes_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../fixtures/fixture_helper.dart';
@@ -19,6 +21,7 @@ void main() {
 
   group('fromJson', () {
     test('should return a valid model from JSON', () async {
+      itgLogPrint('Notes model - should return a valid model from JSON - useMongoDbBackend: $useMongoDbBackend');
       final jsonData = useMongoDbBackend
         ? fixture('notes_mongo_fixture.json')
         : fixture('notes_fixture.json');
@@ -38,9 +41,9 @@ void main() {
     });
 
     test('should return correct data - omit if null or empty', () {
-      const item = NotesModel(description: 'description1');
+      final item = itemNotesSample();
       final result = item.toJson();
-      expect(result, equals({'description': 'description1'}));
+      expect(result, equals(itemNotesObjectAsString(item)));
     });
   });
 }

@@ -29,11 +29,7 @@ void main() {
 
     group('SCCIUC save', () {
       test('SCCIUC save makes correct repository request', () {
-        const newItem = NotesModel(
-          id: '4',
-          description: 'description 4',
-          content: 'content 4',
-        );
+        final newItem = itemNotesUpdateTestData;
         when(() => mockRepository.saveNotesItem(any()))
             .thenAnswer((_) async => Right(tData));
         final subject = createSubject();

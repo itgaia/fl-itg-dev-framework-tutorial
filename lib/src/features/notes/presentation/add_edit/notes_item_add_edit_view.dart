@@ -64,6 +64,7 @@ class NotesItemAddEditView extends StatelessWidget {
   }
 }
 
+//** fields start **//
 class _DescriptionField extends StatelessWidget {
   const _DescriptionField({Key? key}) : super(key: key);
 
@@ -124,3 +125,4 @@ class _ContentField extends StatelessWidget {
     );
   }
 }
+//** fields end **//

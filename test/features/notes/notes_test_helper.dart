@@ -1,6 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dev_framework_tutorial/src/app/constants.dart';
 import 'package:dev_framework_tutorial/src/app/injection_container.dart';
 import 'package:dev_framework_tutorial/src/common/helper.dart';
 import 'package:dev_framework_tutorial/src/core/error/failures.dart';
@@ -10,11 +9,16 @@ import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart'
 import 'package:dev_framework_tutorial/src/features/notes/data/notes_remote_datasource.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/delete_notes_item_usecase.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/get_notes_usecase.dart';
+import 'package:dev_framework_tutorial/src/features/notes/domain/notes_helper.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/notes_repository.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/notes_support.dart';
 import 'package:dev_framework_tutorial/src/features/notes/domain/save_notes_item_usecase.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/add_edit/bloc/notes_item_add_edit_bloc.dart';
 import 'package:dev_framework_tutorial/src/features/notes/presentation/main/bloc/notes_bloc.dart';
+import 'package:dev_framework_tutorial/src/features/notes/presentation/main/notes_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockingjay/mockingjay.dart';
 
 import '../../common/test_helper.dart';
@@ -38,11 +42,41 @@ class FakeNotesItemAddEditEvent extends Fake implements NotesItemAddEditEvent {}
 
 class FakeNotesItem extends Fake implements NotesModel {}
 
-const String sampleNotesItemId = '61011f6d4558ebe4f88acccc';
-const sampleNotesItemAddData = NotesModel(
+notesRegisterFallbackValue() => registerFallbackValue(const NotesModel(description: '111'));
+
+const mockNotesItem = NotesModel(
+  id: '1',
+  description: 'description 1',
+  content: 'content 1',
+  updatedAt: '2021-09-22T07:06:52.604Z'
+);
+const mockNotesItems = [mockNotesItem];
+
+const String sampleNotesItemId = r'61011f6d4558ebe4f88acccc';
+const itemNotesAddTestData = NotesModel(
     description: 'description-sample', content: 'sample content');
-const sampleNotesItemAddDataExpected = NotesModel(
+final itemNotesUpdateTestData = itemNotesAddTestData.copyWith(id: '111');
+const itemNotesAddTestDataExpected = NotesModel(
     id: sampleNotesItemId, description: 'description-sample', content: 'sample content', createdAt: "2021-01-01T21:21:21.21Z", updatedAt: "2021-01-01T21:21:21.21Z");
+
+const sampleNotesData = '''[
+  {
+    "_id": {"\$oid":"61011f6d4558ebe4f88abc1"},
+    "description": "test description 1",
+    "content": "test content 1"
+  },
+  {
+    "_id": {"\$oid":"61011f6d4558ebe4f88abc2"},
+    "description": "test description 2",
+    "content": "test content 2"
+  },
+  {
+    "_id": {"\$oid":"61011f6d4558ebe4f88abc3"},
+    "description": "test description 3",
+    "content": "test content 3"
+  }
+]''';
+
 
 List<NotesModel> notesTestData({int count = 5}) => List.generate(
   count,
@@ -51,15 +85,28 @@ List<NotesModel> notesTestData({int count = 5}) => List.generate(
 
 List<Map<String, dynamic>> notesTestMapData({int count = 5}) => List.generate(
   count,
-  // (i) => {'_id': '${i+1}', 'description': 'test description ${i+1}', 'content': 'test content ${i+1}'}
   (i) => {'id': '${i+1}', 'description': 'test description ${i+1}', 'content': 'test content ${i+1}'}
 );
 
-// "_id":{"$oid":"61011f6d4558ebe4f88acccc"}
 List<Map<String, dynamic>> notesMongoTestMapData({int count = 5}) => List.generate(
   count,
   (i) => {'_id': {r"$oid": r"61011f6d4558ebe4f88acccc"}, 'description': 'test description ${i+1}', 'content': 'test content ${i+1}'}
 );
+
+extension NotesAddedFunctionality on WidgetTester {
+  Future<void> pumpNotesList(NotesBloc bloc) async {
+    itgLogVerbose('WidgetTester.pumpNotesList - start...');
+    return pumpWidget(
+      MaterialApp(
+        home: BlocProvider.value(
+          value: bloc,
+          // child: const NotesList(),
+          child: const NotesView(),
+        ),
+      ),
+    );
+  }
+}
 
 void arrangeReturnsNNotes(mockGetNotesUsecase, {int count = 5}) {
   itgLogVerbose('before when....');
@@ -122,11 +169,11 @@ void setUpHttpClientGetNotesSuccess200({String url = urlNotes}) {
 }
 
 
-void setUpHttpClientCreateNotesItemSuccess200({String url = urlNotes, NotesModel data = sampleNotesItemAddData}) {
+void setUpHttpClientCreateNotesItemSuccess200({String url = urlNotes, NotesModel data = itemNotesAddTestData}) {
   arrangeHttpClientPostReturnSuccess200(url: url, response: fixture('notes_item_create_response_fixture.json'));
 }
 
-void setUpHttpClientUpdateNotesItemSuccess204({String url = '$urlNotes/$sampleNotesItemId', NotesModel data = sampleNotesItemAddData}) {
+void setUpHttpClientUpdateNotesItemSuccess204({String url = '$urlNotes/$sampleNotesItemId', NotesModel data = itemNotesAddTestData}) {
   arrangeHttpClientPutReturnSuccess204(url: url, response: '');
 }
 
@@ -154,4 +201,32 @@ extension TaskX<T extends Either<Object, U>, U> on Task<T> {
 //     }
 //   }));
 // }
+}
+
+/// Values must be different than the ones in sampleNotesItemAddEditState
+const sampleNotesItemInitialData = NotesModel(
+  id: '1',
+  description: 'description 1',
+  content: 'content 1',
+);
+
+const sampleNotesItemAddEditStateObjectList = <Object?>[
+  NotesItemAddEditStatus.initial,
+  sampleNotesItemInitialData,
+  '',
+  'description',
+  'content',
+];
+
+/// Values must be different than the ones in sampleNotesItemInitialData
+NotesItemAddEditState sampleNotesItemAddEditState({
+  NotesItemAddEditStatus status = NotesItemAddEditStatus.initial,
+  NotesModel? initialData
+}) {
+  return NotesItemAddEditState(
+    status: status,
+    initialData: initialData,
+    description: 'description',
+    content: 'content',
+  );
 }

@@ -6,7 +6,7 @@ import 'package:dev_framework_tutorial/src/features/notes/data/notes_model.dart'
 import 'package:dev_framework_tutorial/src/features/notes/presentation/add_edit/bloc/notes_item_add_edit_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../notes_test_helper.dart';
+import '../../../notes_test_helper.dart';
 
 void main() {
   group('NotesItemAddEditBloc', () {
@@ -42,6 +42,7 @@ void main() {
       });
     });
 
+    //** fields start **//
     group('NotesItemAddEditDescriptionChangedEvent', () {
       blocTest<NotesItemAddEditBloc, NotesItemAddEditState>(
         'emits new state with updated code',
@@ -65,6 +66,7 @@ void main() {
         ],
       );
     });
+    //** fields end **//
 
     group('NotesItemAddEditSubmittedEvent', () {
       blocTest<NotesItemAddEditBloc, NotesItemAddEditState>(
@@ -74,32 +76,18 @@ void main() {
           when(() => mockSaveNotesItemUsecase(any())).thenAnswer((_) async => Right(data));
         },
         build: buildBloc,
-        seed: () => const NotesItemAddEditState(
-          description: 'description',
-          content: 'content',
-        ),
+        seed: () => sampleNotesItemAddEditState(),
         act: (bloc) => bloc.add(const NotesItemAddEditSubmittedEvent()),
-        expect: () => const [
-          NotesItemAddEditState(
-            status: NotesItemAddEditStatus.submitting,
-            description: 'description',
-            content: 'content',
-          ),
-          NotesItemAddEditState(
-            status: NotesItemAddEditStatus.success,
-            description: 'description',
-            content: 'content',
-          ),
+        expect: () => [
+          sampleNotesItemAddEditState(status: NotesItemAddEditStatus.submitting),
+          sampleNotesItemAddEditState(status: NotesItemAddEditStatus.success),
         ],
         verify: (bloc) {
           verify(() => mockSaveNotesItemUsecase(any(
                 that: isA<NotesModel>()
                     .having((t) => t.description, 'description', equals('description'))
-                    .having((t) => t.content, 'content', equals('content'),
-                ),
-              ),
-            ),
-          ).called(1);
+                    .having((t) => t.content, 'content', equals('content'))
+          ))).called(1);
         },
       );
 
@@ -110,45 +98,28 @@ void main() {
           when(() => mockSaveNotesItemUsecase(any())).thenAnswer((_) async => Right(data));
         },
         build: buildBloc,
-        seed: () => const NotesItemAddEditState(
-          initialData: NotesModel(
-            id: 'initial-id',
-            description: 'initial-description',
-          ),
-          description: 'description',
-          content: 'content',
+        seed: () => sampleNotesItemAddEditState(
+          initialData: sampleNotesItemInitialData
         ),
         act: (bloc) => bloc.add(const NotesItemAddEditSubmittedEvent()),
         expect: () => [
-          const NotesItemAddEditState(
+          sampleNotesItemAddEditState(
             status: NotesItemAddEditStatus.submitting,
-            initialData: NotesModel(
-              id: 'initial-id',
-              description: 'initial-description',
-            ),
-            description: 'description',
-            content: 'content',
+            initialData: sampleNotesItemInitialData
           ),
-          const NotesItemAddEditState(
+          sampleNotesItemAddEditState(
             status: NotesItemAddEditStatus.success,
-            initialData: NotesModel(
-              id: 'initial-id',
-              description: 'initial-description',
-            ),
-            description: 'description',
-            content: 'content',
-          ),
+            initialData: sampleNotesItemInitialData
+          )
         ],
         verify: (bloc) {
           verify(() => mockSaveNotesItemUsecase(any(
                 that: isA<NotesModel>()
-                    .having((t) => t.id, 'id', equals('initial-id'))
+                    // .having((t) => t.id, 'id', equals('initial-id'))
+                    .having((t) => t.id, 'id', equals(sampleNotesItemInitialData.id))
                     .having((t) => t.description, 'description', equals('description'))
-                    .having((t) => t.content, 'content', equals('content'),
-                ),
-              ),
-            ),
-          );
+                    .having((t) => t.content, 'content', equals('content'))
+              )));
         },
       );
 
@@ -160,22 +131,11 @@ void main() {
             .thenAnswer((_) async => const Left(ServerFailure()));
           return buildBloc();
         },
-        seed: () => const NotesItemAddEditState(
-          description: 'description',
-          content: 'content',
-        ),
+        seed: () => sampleNotesItemAddEditState(),
         act: (bloc) => bloc.add(const NotesItemAddEditSubmittedEvent()),
-        expect: () => const [
-          NotesItemAddEditState(
-            status: NotesItemAddEditStatus.submitting,
-            description: 'description',
-            content: 'content',
-          ),
-          NotesItemAddEditState(
-            status: NotesItemAddEditStatus.failure,
-            description: 'description',
-            content: 'content',
-          ),
+        expect: () => [
+          sampleNotesItemAddEditState(status: NotesItemAddEditStatus.submitting),
+          sampleNotesItemAddEditState(status: NotesItemAddEditStatus.failure),
         ],
       );
     });

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../app/constants.dart';
 import '../../../../app/injection_container.dart';
 import '../../../../common/helper.dart';
 import '../../../../common/itg_localization.dart';
 import '../../data/notes_model.dart';
+import '../../domain/notes_helper.dart';
 import '../../domain/save_notes_item_usecase.dart';
 import '../main/bloc/notes_bloc.dart';
 import 'bloc/notes_item_add_edit_bloc.dart';

@@ -30,6 +30,7 @@ class NotesItemAddEditBloc extends Bloc<NotesItemAddEditEvent, NotesItemAddEditS
     on<NotesItemAddEditSubmittedEvent>(_onSubmitted);
   }
 
+  //** fields start **//
   void _onDescriptionChanged(
       NotesItemAddEditDescriptionChangedEvent event,
       Emitter<NotesItemAddEditState> emit,
@@ -45,6 +46,7 @@ class NotesItemAddEditBloc extends Bloc<NotesItemAddEditEvent, NotesItemAddEditS
   ) {
     emit(state.copyWith(content: event.content));
   }
+  //** fields end **//
 
   Future<void> _onSubmitted(
       NotesItemAddEditSubmittedEvent event,

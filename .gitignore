@@ -48,7 +48,6 @@ app.*.map.json
 # ITG additions
 .notes
 .idea
-.DS_Store
 /.itgsetup.log
 
 ## Private info

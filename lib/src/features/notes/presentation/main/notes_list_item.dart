@@ -60,7 +60,7 @@ class NotesListItemView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _Title(item: item),
-                _Content(item: item)
+                _Content(item: item),
               ],
             ),
           ),
@@ -110,7 +110,11 @@ class NotesListTile extends StatelessWidget {
       ),
       child: ListTile(
         title: _Title(item: item),
-        subtitle: _Content(item: item),
+        subtitle: Column(
+          children: [
+            _Content(item: item),
+          ],
+        ),
       ),
     );
   }
@@ -146,6 +150,7 @@ class _Title extends StatelessWidget {
   }
 }
 
+//** fields except title start **//
 class _Content extends StatelessWidget {
   final NotesModel item;
   const _Content({Key? key, required this.item}) : super(key: key);
@@ -170,3 +175,4 @@ class _Content extends StatelessWidget {
     );
   }
 }
+//** fields except title end **//

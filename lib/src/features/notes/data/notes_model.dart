@@ -24,6 +24,8 @@ class NotesModel with _$NotesModel {
 
   String get title => description;
 
+  static const List<String> fields = ['id', 'description', 'content', 'createdAt', 'updatedAt'];
+
   // TODO: refactor - how can I access properties by name?
   dynamic getProp(String key) => <String, dynamic>{
     'id': id,
